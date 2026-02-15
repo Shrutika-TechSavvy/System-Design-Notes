@@ -16,5 +16,16 @@ This is the figure of Truecaller's System design architecture - Ref : Ashish Mis
 
 Initially 
 1. Client - > Load balancer + Rate limiter
-   - At the top we have , GET called id(phone)
+   - At the top we have , GET called id(phone)#
+   - When a user receives a call, the mobile app sends a request: GET /caller?phone=+91xxxxxx
+   - This request then gies to
+       - load balancer: It distrbutes the traffic across multiple servers and prevents a single server from being overloaded
+       - Rate limiter : Prevents abuse (eg. bots sending millions of queries) , protects against DDoS attacks, limits requests per user/ IP
+2. Two major paths in the diagram
+   - Lookup service and 
+
+Lookup service :
+This handles GET caller id(phone)#
+
+
 
