@@ -57,3 +57,21 @@ Why NoSQL?
 - Fast key-based lookup
 - Massive scale (billions of numbers)
 - Easy horizontal partitioning
+
+Now, let's point down the flow of both the paths :
+- Normal call lookup flow
+User Call
+   ↓
+Load Balancer
+   ↓
+Lookup Service
+   ↓
+Check Cache
+   ↓
+If Miss → NoSQL DB
+   ↓
+Return Caller Info
+-Here so most of the are served from cache
+
+
+  
