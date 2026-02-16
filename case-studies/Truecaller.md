@@ -59,7 +59,7 @@ Why NoSQL?
 - Easy horizontal partitioning
 
 Now, let's point down the flow of both the paths :
-- Normal call lookup flow
+**- Normal call lookup flow**
 User Call
    ↓
 Load Balancer
@@ -73,5 +73,19 @@ If Miss → NoSQL DB
 Return Caller Info
 -Here so most of the are served from cache
 
+**Spam Report/ Update Flow**
+User Reports Spam
+   ↓
+Load Balancer
+   ↓
+Caller ID Update Service
+   ↓
+Preparatory DB
+   ↓
+Periodic Batch Update
+   ↓
+Main NoSQL DB
 
-  
+-This separates the read path(fast) and write path(controlled & batched)
+
+
