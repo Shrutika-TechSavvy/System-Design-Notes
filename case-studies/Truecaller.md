@@ -112,6 +112,8 @@ Most likely LSM trees based engine, because LSM-trees are optimized for write-he
 Think about how Truecaller behaves in real life: millions of people are constantly reporting spams, billions of phone no. exist in the database, it runs across many servers not just one machine, sometimes spam reports come in huge bursts so the system must handle huge data , lots of writes , scale across machines and not slow down during sudden spikes. 
 
 4. Partitioning - Hash Partitioning
-   FOr the uniform load distribution, avoiding country based hotspots, use hash partitioning. Hash partitioning = Use math to evenly distribute data across many servers so no single server becomes overloaded, and scaling becomes easy.
-
+   FOr the uniform load distribution, avoiding country based hotspots, and for easy partitioning, use hash partitioning. Hash partitioning = Use math to evenly distribute data across many servers so no single server becomes overloaded, and scaling becomes easy.
+5. Replication model
+6. Caching - Redis
+7. Serialization- protocol buffers
    
