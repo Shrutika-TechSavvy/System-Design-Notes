@@ -96,7 +96,7 @@ From a storage engine perspectiev:
 - Primary access patterns = point lookup by phone number
 - Global distributeioon required
 - Write amplification acceptablw
-- Range scans are rare
+- Range scans are rare 
 
 
 **Indexing type : 
