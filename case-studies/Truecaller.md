@@ -87,4 +87,25 @@ Main NoSQL DB
 
 -This separates the read path(fast) and write path(controlled & batched)
 
+# Internal most plausible infrastructure of the Truecaller
+The exact internal stack of Truecaller is nto revealed by the them although by the workload characterization as below can be determined :
 
+From a storage engine perspectiev:
+- Extremely read-heavy, caller lookups
+- High write volume (The spam reports , updates)
+- Primary access patterns = point lookup by phone number
+- Global distributeioon required
+- Write amplification acceptablw
+- Range scans are rare
+
+
+**Indexing type : 
+1. Primary index: Hash-Based key-value index**
+Access patterns: GET(phone_number) → return caller info. This is pure key-value lookup, so best fit  is partitioned hash index where phoneno. is partition key, O(1) avg lookup. So, **This is a log-structured, partitioned key-value store optimized for point reads.**
+
+**2. Secondary Indexes**
+Possible secondary indexes: spam_flag, country_code, business_category. But thse are likely local secondary indexes, materialized views or separate lookup tables because large distributed systems avoid heavy secondary index dur to coordination cost. (Keep system simple and scalable)
+3. Storage engine type:
+Most likely LSM trees based engine, because LSM-trees are optimized for write-heavy workloads and high write throughputs.
+Think about how Truecaller behaves in real life: millions of people are constantly reporting spams, billions of phone no. exist in the database, it runs across many servers not just one machine, sometimes spam reports come in huge bursts so the system must handle huge data , lots of writes , scale across machines and not slow down during sudden spikes. 
+   
