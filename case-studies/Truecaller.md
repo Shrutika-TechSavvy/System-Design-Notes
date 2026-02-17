@@ -99,8 +99,8 @@ From a storage engine perspectiev:
 - Range scans are rare 
 
 
-**Indexing type : 
-1. Primary index: Hash-Based key-value index**
+Indexing type : 
+**1. Primary index: Hash-Based key-value index**
 Access patterns: GET(phone_number) → return caller info. This is pure key-value lookup, so best fit  is partitioned hash index where phoneno. is partition key, O(1) avg lookup. So, **This is a log-structured, partitioned key-value store optimized for point reads.**
 
 **2. Secondary Indexes**
