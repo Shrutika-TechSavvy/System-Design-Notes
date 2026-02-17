@@ -15,7 +15,7 @@ This is the figure of Truecaller's System design architecture - Ref : Ashish Mis
 
 
 Initially 
-**1. Client - > Load balancer + Rate limiter**
+# 1. Client - > Load balancer + Rate limiter
    - At the top we have , GET called id(phone)#
    - When a user receives a call, the mobile app sends a request: GET /caller?phone=+91xxxxxx
    - This request then gies to
@@ -23,10 +23,9 @@ Initially
        - Rate limiter : Prevents abuse (eg. bots sending millions of queries) , protects against DDoS attacks, limits requests per user/ IP
     
      
-**2. Two major paths in the diagram**
+# 2. Two major paths in the diagram
    - Lookup service and 
-**
-# Lookup service :**
+**Lookup service :**
 This handles GET caller id(phone)#
 Step-by-step:
 
@@ -36,12 +35,12 @@ Step-by-step:
 4. If nott found - > Query the Caller ID NoSQL Database, Store result in cache, return response
 This is the read-heavy fast path
 
-# **Caller ID Update Service**
+**Caller ID Update Service**
 This handles : report spam/ update caller id
 when users report spam, update their name, modify profile it goes to Caller ID Update Service
 - This writes chaneghs to a Prepatory Database (temporary store of numbers to be updated), periodically update the main NoSQL database. This prevents constant direct writes to amin DB, write bottlenecks
 
-**3. Main Storage layer**
+# **3. Main Storage layer**
 At the bottom:  Caller Id NoSQl DB: Distributed, replicated across geography, high availability and horizontal scaling
 Schema in the idagram : 
 
