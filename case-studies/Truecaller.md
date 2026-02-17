@@ -105,7 +105,8 @@ Access patterns: GET(phone_number) → return caller info. This is pure key-valu
 
 **2. Secondary Indexes**
 Possible secondary indexes: spam_flag, country_code, business_category. But thse are likely local secondary indexes, materialized views or separate lookup tables because large distributed systems avoid heavy secondary index dur to coordination cost. (Keep system simple and scalable)
-3. Storage engine type:
+
+**3. Storage engine type:**
 Most likely LSM trees based engine, because LSM-trees are optimized for write-heavy workloads and high write throughputs.
 Think about how Truecaller behaves in real life: millions of people are constantly reporting spams, billions of phone no. exist in the database, it runs across many servers not just one machine, sometimes spam reports come in huge bursts so the system must handle huge data , lots of writes , scale across machines and not slow down during sudden spikes. 
    
