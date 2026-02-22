@@ -45,7 +45,7 @@ User should be able to:
 	- login
 	- Maintain Profile
 	- Subscribe to premium
-So in simple we need aithentication and subscriptio validation
+So in simple we need authentication and subscription validation
 
 **3.2 Play Music**
 When a user clicks play:
@@ -97,3 +97,56 @@ Because:
 
 This means:
 We need event streaming architecture (like Kafka).
+
+# Non - functional requirements (How good the system must be)
+
+**4.1 Availability**
+Music streming cannot go down often.If playback fails : User leaves the platform . SO we target 99.99 % uptime. Which means redendant servers, failover and multi region deployment.
+
+**4.2 Low latency**
+Playback start time must be <200ms ideally. If the user clicks and waits 2-3 sec. It feels broken so CDN required , edge servers and caching hot songs.
+
+**4.3 Scalability**
+System must handle : 
+  - Millions of concurrent streams,
+  - Sudden spikes,
+  - Global distribution
+  -  so, horizontal scaling , load balancing and stateless services preferred
+
+**4.4 Durability**
+We cannot lose music files , If a storage server crashes: Music must still exist. So, replication , Multi AZ storage and backups.
+
+**4.5 Consistency**
+Not everything needs strong consistency.
+Example:
+  - If playlist count is delayed by 2 seconds -> okay.
+  - If billing status wrong ->  NOT okay.
+So, 
+| Feature          | Consistency |
+| ---------------- | ----------- |
+| Billing          | Strong      |
+| Playlist updates | Eventual OK |
+| Social counts    | Eventual OK |
+This is CAP theorem tradeoff..
+
+**4.6 Security**
+We must prevent unauthorzied downloads,piraccy and token misuse so sugned URL's , token expiration, HTTPS, Ret limiting etc.
+
+**4.7. Capacity thinking**
+Let’s think bandwidth.
+If:
+20 million users streaming, 
+Each at 256 kbps
+Total bandwidth: 20M × 256kbps = 5+ Terabits per second
+- No single data center can handle that.
+So CDN is mandatory.
+
+What I Realized So Far
+
+From just writing requirements, I understand:
+  - This is not just a database problem.
+  - This is a distributed systems problem.
+  - Playback system is the core.
+  - Recommendation is the intelligence layer.
+  - CDN + Object Storage will be major components.
+  - Event streaming will glue everything together.
