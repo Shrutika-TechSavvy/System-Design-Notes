@@ -150,3 +150,11 @@ From just writing requirements, I understand:
   - Recommendation is the intelligence layer.
   - CDN + Object Storage will be major components.
   - Event streaming will glue everything together.
+
+# System Boundaries & External Dependencies
+To simplify the design, we assume:
+  - Payment processing is handled by a third-party provider.
+  - CDN is managed by an external cloud provider.
+  - Cloud infrastructure (compute, storage) is managed via AWS/GCP/Azure.
+  - DRM/licensing validation service exists internally.
+  - ML training runs on cloud-managed compute clusters.
