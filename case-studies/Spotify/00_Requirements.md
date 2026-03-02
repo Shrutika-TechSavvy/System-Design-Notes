@@ -1,4 +1,4 @@
-Spotify System Design - Requirements
+The Spotify System Design - Requirements of the system
 # Problem statement
 We are designing a music streaming platform like Spotify.
 ie. 
@@ -158,3 +158,4 @@ To simplify the design, we assume:
   - Cloud infrastructure (compute, storage) is managed via AWS/GCP/Azure.
   - DRM/licensing validation service exists internally.
   - ML training runs on cloud-managed compute clusters.
+
