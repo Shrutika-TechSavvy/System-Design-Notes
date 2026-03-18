@@ -68,3 +68,43 @@ Older services might:
 - ignore it incorrectly
 - break if they expect a fixed structure
 
+3. Why Spotify Uses Protocol Buffers
+
+To solve these problems, Spotify uses Protocol Buffers (Protobuf).
+
+Protobuf is a binary serialization format developed by Google.
+
+Example Protobuf Schema
+
+message PlaylistRequest {
+string user_id = 1;
+string playlist_id = 2;
+}
+
+Advantages of Protobuf
+1. Compact Size
+   - Field names are not sent.
+   - Only field numbers are used
+   - This reduces payload size significantly.
+2. Faster Processing
+   - Binary format → faster serialization/deserialization
+   - Lower CPU usage
+3. Strong Schema
+   - Defined using .proto files
+   - Ensures consistency across services
+4. Easy Schema Evolution
+   - New fields can be added safely:
+
+message PlaylistRequest {
+string user_id = 1;
+string playlist_id = 2;
+string preferred_genre = 3;
+}
+
+Old services:
+- ignore unknown fields
+- continue working without breaking
+
+Key Insight (From DDIA Chapter 4)
+
+- The goal is not just to encode data, but to ensure that:systems remain compatible over time, data can evolve without breaking services, This is why binary formats like Protobuf are widely used in real-world systems.
