@@ -37,7 +37,9 @@ so, How can services efficiently exchange structured data at massive scale while
 - backward and forward compatibility
 
 This is where binary encoding formats like **Protocol Buffers** come into the picture.
+
 ## 2. Why JSON is Not Enough ?
+
 At small scale , JSON works well because it is simple and human readable. However at Spotify's scale , JSOn becomes inefficient.
 
 Example JSON Request
@@ -68,7 +70,7 @@ Older services might:
 - ignore it incorrectly
 - break if they expect a fixed structure
 
-3. Why Spotify Uses Protocol Buffers
+## 3. Why Spotify Uses Protocol Buffers
 
 To solve these problems, Spotify uses Protocol Buffers (Protobuf).
 
@@ -108,3 +110,67 @@ Old services:
 Key Insight (From DDIA Chapter 4)
 
 - The goal is not just to encode data, but to ensure that:systems remain compatible over time, data can evolve without breaking services, This is why binary formats like Protobuf are widely used in real-world systems.
+
+## **4. Deep Dive: Real Request Flow with Protobuf (Step-by-Step)**
+
+**Step 1: User action (Client layer)**
+- User clicks on playlist, Client prepares a request 
+{
+ "user_id" : "123", 
+  "playlist_id" : "rock_hits"
+ }
+ - At this point Data is still in JSON/Object form, No protobuf yet
+ 
+ **Step 2: Client Uses Protobuf Schema**
+ - Before sending the request, the client uses a .proto definition because it is schema based encoding so it strictly tells that I want this format:
+
+message PlaylistRequest {
+string user_id = 1;
+string playlist_id = 2;
+}
+This means that there is structure called PlaylistRequest, it must have user_id (text) , playlist_id (text) so basically any request must follow this strcuture. 
+- The client library (generated from .proto) converts this into an internal object(We use the .proto file to create a structured object before converting it into binary.):
+
+PlaylistRequest {
+user_id = "123"
+playlist_id = "rock_hits"
+}
+<img width="432" height="67" alt="image" src="https://github.com/user-attachments/assets/7fe9d015-c623-4121-9a98-ae01a3d4a2ec" />
+
+In simple terms, the `.proto` file is like a fixed structure or template that both client and server already know. Using this, the client does NOT create JSON first—instead, it directly creates a structured object (like `PlaylistRequest`) using the format defined in the `.proto`. This object is just normal data inside the program, but it strictly follows the schema. So basically, Step 2 means: the client takes the `.proto` structure and creates data in that exact format (not JSON), which will later be converted into binary and sent to the server.
+
+
+**Step 3: Protobuf serialization (Object -> Binary)**
+Protobuf converts this object into binary using : Encoding rules
+
+**Step 4: gRPC Transmission**
+- After the data is converted into binary, the client needs to send it to the server over the internet. This is where gRPC comes in. Think of gRPC as a fast delivery system that knows how to send and receive Protobuf data.
+
+- Instead of sending normal text data like in REST (JSON over HTTP), gRPC sends the binary data using HTTP/2, which is a more efficient version of HTTP.
+
+**Step 5: Recommendation Service Receives Data**
+
+The receiving service:
+- Gets binary data
+- Uses the SAME .proto schema
+- Starts decoding
+
+**Step 6: Protobuf Deserialization (Binary → Object)**
+Reconstructed object:
+
+PlaylistRequest {
+user_id = "123"
+playlist_id = "rock_hits"
+}
+
+**Step 7: Business Logic Execution**
+Now the service:
+- fetches user preferences
+- computes recommendations
+- prepares response
+<img width="403" height="324" alt="image" src="https://github.com/user-attachments/assets/4640e7a9-c340-4dca-89ea-8f5b1174df78" />
+
+<img width="250" height="222" alt="image" src="https://github.com/user-attachments/assets/2e66eb2b-d0dc-42dc-b6a8-1b631682b8c5" />
+<img width="387" height="188" alt="image" src="https://github.com/user-attachments/assets/8f405c73-99d4-405b-b26a-c6c8ac7b726d" />
+
+
