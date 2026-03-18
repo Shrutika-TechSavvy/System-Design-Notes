@@ -37,3 +37,34 @@ so, How can services efficiently exchange structured data at massive scale while
 - backward and forward compatibility
 
 This is where binary encoding formats like **Protocol Buffers** come into the picture.
+## 2. Why JSON is Not Enough ?
+At small scale , JSON works well because it is simple and human readable. However at Spotify's scale , JSOn becomes inefficient.
+
+Example JSON Request
+
+{
+"user_id": "123",
+"playlist_id": "rock_hits"
+}
+
+Problems :
+1. Large Payload size
+   JSON includes field names as text , which increases the size of every request. For example: "user_id" is sent every time. This adds the unnecessary overhead. At millions of request per second , this leads to higher bandwidth usage and increased latency.
+2. Slower processing
+   JSON needs to be : parsed (string -> object), validates so this is a slower compared to binary formats.
+3. Weak schema enforcement
+   JSOn doesn't strictly enforce structure so it leads to problems of missing fields, incorrect data types, incosnsistent format across services.
+4. Difficult Schema Evolution
+
+If a new field is added:
+
+{
+"user_id": "123",
+"playlist_id": "rock_hits",
+"preferred_genre": "rock"
+}
+
+Older services might:
+- ignore it incorrectly
+- break if they expect a fixed structure
+
