@@ -173,4 +173,5 @@ Now the service:
 <img width="250" height="222" alt="image" src="https://github.com/user-attachments/assets/2e66eb2b-d0dc-42dc-b6a8-1b631682b8c5" />
 <img width="387" height="188" alt="image" src="https://github.com/user-attachments/assets/8f405c73-99d4-405b-b26a-c6c8ac7b726d" />
 
+<img width="1536" height="1024" alt="image" src="https://github.com/user-attachments/assets/e59652e0-6a13-4a92-8e64-2eb1ae554b95" />
 
